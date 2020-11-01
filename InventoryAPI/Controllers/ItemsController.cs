@@ -46,46 +46,21 @@ namespace InventoryAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ItemCreateRequest request)
         {
-            var response = new ApiCrudResponse();
-            if (request == null)
-            {
-                response.success = false;
-                response.message = "Recieved empty payload";
-            }
-            else
-            response = await _itemService.Create(request);
+            var response = await _itemService.Create(request);
             return Ok(response);
         }
 
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] Item request)
         {
-            var response = new ApiCrudResponse();
-            if (request == null)
-            {
-                response.success = false;
-                response.message = "Recieved empty payload";
-            }
-            else
-            {
-                response = await _itemService.Update(request);
-            }
+            var response = await _itemService.Update(request);
             return Ok(response);
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete([FromBody] Item request)
         {
-            var response = new ApiCrudResponse();
-            if (request == null)
-            {
-                response.success = false;
-                response.message = "Recieved empty payload";
-            }
-            else
-            {
-                response = await _itemService.Delete(request);
-            }
+            var response = await _itemService.Delete(request);
             return Ok(response);
         }
     }

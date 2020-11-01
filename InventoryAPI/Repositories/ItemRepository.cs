@@ -51,18 +51,24 @@ namespace InventoryAPI.Repositories
             _inventoryDbContext.Add(request);
             results.success = await _inventoryDbContext.SaveChangesAsync() != 0;
             results.item = request;
+
             return results;
         }
 
         public async Task<bool> Update(Item request)
         {
-            _inventoryDbContext.Update(request);
+            var item = await GetItemById(request.id);
+            item.itemName = request.itemName;
+            item.cost = request.cost;
+            _inventoryDbContext.Update(item);
+
             return await _inventoryDbContext.SaveChangesAsync() != 0;
         }
 
         public async Task<bool> Delete(Item request)
         {
             _inventoryDbContext.Remove(request);
+
             return await _inventoryDbContext.SaveChangesAsync() != 0;
         }
     }

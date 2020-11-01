@@ -40,12 +40,20 @@ namespace InventoryAPI.Services
         public async Task<ApiCrudResponse> Create(ItemCreateRequest request)
         {
             ApiCrudResponse response = new ApiCrudResponse();
-            Item item = new Item() { itemName = request.itemName, cost = request.cost};
-            
-            response = await _itemRepository.Create(item);
-            if (response.success)
+
+            try
             {
-                response.message = "Item created";
+                Item item = new Item() { itemName = request.itemName, cost = request.cost };
+                response = await _itemRepository.Create(item);
+                if (response.success)
+                {
+                    response.message = "Item created";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.success = false;
+                response.message = ex.Message + " inner exception: " + ex.InnerException?.Message;
             }
             return response;
         }
@@ -53,23 +61,40 @@ namespace InventoryAPI.Services
         public async Task<ApiCrudResponse> Update(Item request)
         {
             ApiCrudResponse response = new ApiCrudResponse();
-            
-            response.success = await _itemRepository.Update(request);
-            if (response.success)
+
+            try
             {
-                response.message = "Update successful";
+                response.success = await _itemRepository.Update(request);
+                if (response.success)
+                {
+                    response.message = "Update successful";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.success = false;
+                response.message = ex.Message + " inner exception: " + ex.InnerException?.Message;
             }
             return response;
         }
 
         public async Task<ApiCrudResponse> Delete(Item request)
         {
+
             ApiCrudResponse response = new ApiCrudResponse();
-            
-            response.success = await _itemRepository.Delete(request);
-            if (response.success)
+
+            try
             {
-                response.message = "Delete successful";
+                response.success = await _itemRepository.Delete(request);
+                if (response.success)
+                {
+                    response.message = "Delete successful";
+                }
+            }
+            catch(Exception ex)
+            {
+                response.success = false;
+                response.message = ex.Message + " inner exception: " + ex.InnerException?.Message;
             }
             return response;
         }
